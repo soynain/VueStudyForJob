@@ -2,6 +2,8 @@ import LoginViewVue from '@/views/LoginView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardViewVue from '@/views/DashboardView.vue'
 import ModifyProductView from '@/views/ModifyProductView.vue';
+import InsertProductView from '@/views/InsertProductView.vue';
+import PathNotFoundView from '@/views/PathNotFoundView.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -17,8 +19,15 @@ const router = createRouter({
     },
     {
       path:'/dashboard/edit/:id',
-      name:'edit-user',
+      name:'edit-producto',
       component:ModifyProductView
+    },
+    {
+      path:'/dashboard/insert',
+      name:'insert-producto',
+      component:InsertProductView
+    },{
+      path: '/:pathMatch(.*)*', component: PathNotFoundView
     }
    /* {
       path: '/about',

@@ -21,7 +21,7 @@ export default defineConfig({
       '/crudjwtphp/public/productos/get': 'http://localhost',
       '/crudjwtphp/public/productos/updateprod/':'http://localhost',
       '/crudjwtphp/public/login/auth':'http://localhost',
-      '/crudjwtphp/public/productos/deleteprod/:id':'http://localhost',
+      '/crudjwtphp/public/productos/deleteprod/':'http://localhost',
       '/crudjwtphp/public/productos/saveprod':'http://localhost'
     }
   }

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import ProductInputsComponent from '@/components/ProductInputsComponent.vue';
-import { ref, type Ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref } from 'vue';
 import router from '@/router';
 import { savedDataAlertStore } from '@/stores/savedDataState';
 
@@ -9,8 +7,8 @@ interface ResponseProducts {
     status: number,
     body: string
 }
-let savedDataStore = savedDataAlertStore();
-let idUserPathParam = useRoute();
+
+let savedDataStore=savedDataAlertStore();
 
 let booleanValidacionCamposRender = ref(false),
     booleanServerErrorAlertRender = ref(false);
@@ -20,9 +18,9 @@ let nombretxt = ref<string>(""),
     preciotxt = ref<string>(""),
     fabricantetxt = ref<string>("");
 
-async function updateDataFunctionPayload() {
+    async function updateDataFunctionPayload() {
     //console.log("forms dsta: ",nombretxt.value.trim(),descripcionTxt.value.trim(),preciotxt.value.trim(),fabricantetxt.value.trim());
-    let updatePayload = await fetch(`/crudjwtphp/public/productos/updateprod/${idUserPathParam.params.id}`, {
+    let updatePayload = await fetch(`/crudjwtphp/public/productos/saveprod`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -61,7 +59,7 @@ async function updateData() {
 </script>
 <template>
     <NavBar />
-    <header class="h2 text-center">Modificar producto</header>
+    <header class="h2 text-center">Registrar nuevo producto</header>
     <section class="d-flex flex-column justify-content-center align-items-center">
         <div v-if="booleanServerErrorAlertRender === true" class="alert alert-danger w-75">Hubo un error al guardar sus
             datos, intentelo más tarde.</div>
@@ -76,6 +74,7 @@ async function updateData() {
             @update:nombretxt="getNombre => nombretxt = new String(getNombre).valueOf()"
             @update:descripcionTxt="getDescripcion => descripcionTxt = new String(getDescripcion).valueOf()"
             @update:fabricantetxt="getFabricante => fabricantetxt = new String(getFabricante).valueOf()"
-            @update:preciotxt="getPrecio => preciotxt = new String(getPrecio).valueOf()" />
+            @update:preciotxt="getPrecio => preciotxt = new String(getPrecio).valueOf()" 
+        />
     </section>
 </template>
