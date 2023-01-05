@@ -15,5 +15,14 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  server: {
+    proxy: {
+      '/crudjwtphp/public/productos/get': 'http://localhost',
+      '/crudjwtphp/public/productos/updateprod/:id':'http://localhost',
+      '/crudjwtphp/public/login/auth':'http://localhost',
+      '/crudjwtphp/public/productos/deleteprod/:id':'http://localhost',
+      '/crudjwtphp/public/productos/saveprod':'http://localhost'
+    }
   }
 })

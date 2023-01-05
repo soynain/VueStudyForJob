@@ -1,13 +1,25 @@
+import LoginViewVue from '@/views/LoginView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-
+import DashboardViewVue from '@/views/DashboardView.vue'
+import ModifyProductView from '@/views/ModifyProductView.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    /*{
+    {
       path: '/',
-      name: 'home',
-      component: HomeView
-    },*/
+      name: 'login',
+      component: LoginViewVue
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component:DashboardViewVue
+    },
+    {
+      path:'/dashboard/edit/:id',
+      name:'edit-user',
+      component:ModifyProductView
+    }
    /* {
       path: '/about',
       name: 'about',

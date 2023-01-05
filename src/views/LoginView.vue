@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
+import { mostrarNavLinks } from '@/stores/showNavDashboardLinks';
+import router from '@/router';
 import { authStore } from "../stores/authStore";
+
 const usertxt = ref("");
 const passtxt = ref("");
 
@@ -11,6 +14,7 @@ const updateWarning = ref(0);
 let warningTxt = ref("");
 
 let jwtTokenStore = authStore();
+let estadoNavHandler = mostrarNavLinks();
 
 function openLoginWarningModal(text: string) {
   badCredentials.value = true;
@@ -24,8 +28,17 @@ function closeLoginWarningModal() {
   warningTxt.value = "";
 }
 
+async function loginCall(usertxt: string, passtxt: string) {
+  let jwtInfo = await fetch("/crudjwtphp/public/login/auth", {
+    method: "POST",
+    body: JSON.stringify({ usertxt, passtxt })
+  });
+  let jsonResponse = await jwtInfo.json();
+  return jsonResponse;
+}
+
 async function validateInput() {
-  console.log(usertxt.value, passtxt.value);
+  //console.log(usertxt.value, passtxt.value);
   if (usertxt.value.trim() === "" || passtxt.value.trim() === "") {
     openLoginWarningModal("No puede haber campos vacios");
     setTimeout(() => { closeLoginWarningModal(); }, 5000);
@@ -33,22 +46,14 @@ async function validateInput() {
     let jwtTokenRes = await loginCall(usertxt.value, passtxt.value);
     if (jwtTokenRes.status !== 200) {
       openLoginWarningModal("Sus credenciales son incorrectas");
-      setTimeout(() => {closeLoginWarningModal();}, 5000);
+      setTimeout(() => { closeLoginWarningModal(); }, 5000);
     } else {
       let token = JSON.parse(jwtTokenRes.body);
-      jwtTokenStore.setJwtToken(token["Bearer-token"]);
-      //console.log(jwtTokenStore.getJwt());
+      jwtTokenStore.setJwtToken(token["bearer-token"]);
+      estadoNavHandler.setEstadoNav(1);
+      router.push({ name: "dashboard" });
     }
   }
-}
-
-async function loginCall(usertxt: string, passtxt: string) {
-  let jwtInfo = await fetch("http://localhost/crudjwtphp/public/login/auth", {
-    method: "POST",
-    body: JSON.stringify({ usertxt, passtxt })
-  });
-  let jsonResponse = await jwtInfo.json();
-  return jsonResponse;
 }
 </script>
 

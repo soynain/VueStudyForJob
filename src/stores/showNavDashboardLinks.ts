@@ -7,9 +7,13 @@ export const mostrarNavLinks=defineStore('navLinksState',()=>{
         return estadoNav.value++;
     }
 
+    function setEstadoNav(valor:number){
+        estadoNav.value=valor;
+    }
+
     function getEstadoNavValue(){
         return estadoNav.value;
     }
 
-    return {estadoNav,incrementarEstadoNav,getEstadoNavValue};
+    return {estadoNav,incrementarEstadoNav,getEstadoNavValue,setEstadoNav};
 });
