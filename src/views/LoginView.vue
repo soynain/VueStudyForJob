@@ -9,7 +9,6 @@ const usertxt = ref("");
 const passtxt = ref("");
 
 const badCredentials = ref(false);
-const updateWarning = ref(0);
 
 let warningTxt = ref("");
 
@@ -18,13 +17,11 @@ let estadoNavHandler = mostrarNavLinks();
 
 function openLoginWarningModal(text: string) {
   badCredentials.value = true;
-  updateWarning.value++;
   warningTxt.value = text;
 }
 
 function closeLoginWarningModal() {
   badCredentials.value = false;
-  updateWarning.value++;
   warningTxt.value = "";
 }
 
