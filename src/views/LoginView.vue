@@ -4,28 +4,48 @@ import { RouterLink, RouterView } from 'vue-router';
 import { authStore } from "../stores/authStore";
 const usertxt = ref("");
 const passtxt = ref("");
+
 const badCredentials = ref(false);
 const updateWarning = ref(0);
 
+let warningTxt = ref("");
+
 let jwtTokenStore = authStore();
+
+function openLoginWarningModal(text: string) {
+  badCredentials.value = true;
+  updateWarning.value++;
+  warningTxt.value = text;
+}
+
+function closeLoginWarningModal() {
+  badCredentials.value = false;
+  updateWarning.value++;
+  warningTxt.value = "";
+}
 
 async function validateInput() {
   console.log(usertxt.value, passtxt.value);
-  // let jwtAnswer: any = usertxt.value.trim() !== "" && passtxt.value.trim() !== "" ? await loginCall(usertxt.value, passtxt.value) : badCredentials.value = false;
-  if (usertxt.value.trim() === "" && passtxt.value.trim() === "") {
-    badCredentials.value = true;
-    updateWarning.value++;
-    console.log(updateWarning.value, badCredentials.value);
-  }else{
-    let jwtTokenRes=await loginCall(usertxt.value, passtxt.value);
-    //authStore logic
+  if (usertxt.value.trim() === "" || passtxt.value.trim() === "") {
+    openLoginWarningModal("No puede haber campos vacios");
+    setTimeout(() => { closeLoginWarningModal(); }, 5000);
+  } else {
+    let jwtTokenRes = await loginCall(usertxt.value, passtxt.value);
+    if (jwtTokenRes.status !== 200) {
+      openLoginWarningModal("Sus credenciales son incorrectas");
+      setTimeout(() => {closeLoginWarningModal();}, 5000);
+    } else {
+      let token = JSON.parse(jwtTokenRes.body);
+      jwtTokenStore.setJwtToken(token["Bearer-token"]);
+      //console.log(jwtTokenStore.getJwt());
+    }
   }
 }
 
-async function loginCall(username: string, passtxt: string) {
-  let jwtInfo = await fetch("http://localhost/vuebackend/login", {
+async function loginCall(usertxt: string, passtxt: string) {
+  let jwtInfo = await fetch("http://localhost/crudjwtphp/public/login/auth", {
     method: "POST",
-    body: JSON.stringify({ username, passtxt })
+    body: JSON.stringify({ usertxt, passtxt })
   });
   let jsonResponse = await jwtInfo.json();
   return jsonResponse;
@@ -35,10 +55,8 @@ async function loginCall(username: string, passtxt: string) {
 <template>
   <NavBar />
   <main>
-
     <section class="d-flex flex-column justify-content-center align-items-center min-vh-100">
-      <div class="alert alert-warning" role="alert" v-if="badCredentials === true">Revise sus credenciales e intente de
-        nuevo.</div>
+      <div class="alert alert-warning" role="alert" v-if="badCredentials === true">{{ warningTxt }}</div>
       <form class="form-login">
         <div class="mb-3">
           <label for="usertxt">Usuario</label>
