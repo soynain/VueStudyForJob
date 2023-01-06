@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { authStore } from '@/stores/authStore';
-import { onMounted, ref, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref } from 'vue';
 import router from '@/router';
 import { savedDataAlertStore } from '@/stores/savedDataState';
+import { mostrarNavLinks } from '@/stores/showNavDashboardLinks';
 
+let jwtTokenStore = authStore();
 let savedDataStore = savedDataAlertStore();
+
 let deletedProductoAlert = ref(false),
     errorAlBorrarProductoAlert = ref(false);
 
@@ -25,13 +28,14 @@ interface ProductsArray {
 }
 
 
+
 async function fetchListOfProducts() {
     let jwtTokenStore = authStore();
     let fetchListOfProducts = await fetch("/crudjwtphp/public/productos/get", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
-            "bearer-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlhdCI6MTM1Njk5OTUyNCwibmJmIjoxMzU3MDAwMDAwLCJpZCI6IjEiLCJ1c2VyIjoibWFyaW9uaWNlIn0.5HqEeJex2vZvWlhzj3KUTwvt8TYpCLsiHneNa5mlKqw"
+            "bearer-token": jwtTokenStore.getJwt()
         }
     });
     let response = fetchListOfProducts.json();
@@ -43,7 +47,7 @@ async function fetchDeleteProduct(idProducto: number) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "bearer-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlhdCI6MTM1Njk5OTUyNCwibmJmIjoxMzU3MDAwMDAwLCJpZCI6IjEiLCJ1c2VyIjoibWFyaW9uaWNlIn0.5HqEeJex2vZvWlhzj3KUTwvt8TYpCLsiHneNa5mlKqw"
+            "bearer-token": jwtTokenStore.getJwt()
         }
     });
     let responseDetails = responsePayload.json();
@@ -77,10 +81,12 @@ async function borrarProducto(idProducto: number) {
     renderAgainTable.value++;
 }
 
-
 let bodyGetData: ResponseProducts = await fetchListOfProducts();
 listaProductos.value = JSON.parse(bodyGetData.body);
-
+onBeforeMount(()=>{
+    let estadoNavHandler = mostrarNavLinks();
+    estadoNavHandler.setEstadoNav(1);
+});
 onMounted(() => {
     setTimeout(() => {
         savedDataStore.setSavedDataState(false);

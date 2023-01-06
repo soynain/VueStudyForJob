@@ -1,16 +1,23 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export const authStore=defineStore('authStore',()=>{
-    const jwtToken=ref("");
+export const authStore = defineStore('authStore', {
+    state: () => {
 
-    function setJwtToken($newJwt:string){
-        jwtToken.value=$newJwt;
+        const jwtToken = ref<string>("");
+
+        function setJwtToken($newJwt: string) {
+            jwtToken.value = $newJwt;
+        }
+
+        function getJwt() {
+            return jwtToken.value;
+        }
+
+        return { jwtToken, setJwtToken, getJwt };
+
+    },
+    persist:{
+        storage:localStorage
     }
-
-    function getJwt(){
-       return jwtToken.value;
-    }
-
-    return {jwtToken,setJwtToken,getJwt};
 });

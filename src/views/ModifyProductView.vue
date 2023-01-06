@@ -4,6 +4,7 @@ import { ref, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 import { savedDataAlertStore } from '@/stores/savedDataState';
+import { authStore } from '@/stores/authStore';
 
 interface ResponseProducts {
     status: number,
@@ -11,6 +12,7 @@ interface ResponseProducts {
 }
 let savedDataStore = savedDataAlertStore();
 let idUserPathParam = useRoute();
+let jwtTokenStore = authStore();
 
 let booleanValidacionCamposRender = ref(false),
     booleanServerErrorAlertRender = ref(false);
@@ -26,7 +28,7 @@ async function updateDataFunctionPayload() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "bearer-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlhdCI6MTM1Njk5OTUyNCwibmJmIjoxMzU3MDAwMDAwLCJpZCI6IjEiLCJ1c2VyIjoibWFyaW9uaWNlIn0.5HqEeJex2vZvWlhzj3KUTwvt8TYpCLsiHneNa5mlKqw"
+            "bearer-token": jwtTokenStore.getJwt()
         },
         body: JSON.stringify({
             "nombretxt": nombretxt.value.trim(),

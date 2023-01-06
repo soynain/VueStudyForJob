@@ -13,7 +13,7 @@ const badCredentials = ref(false);
 let warningTxt = ref("");
 
 let jwtTokenStore = authStore();
-let estadoNavHandler = mostrarNavLinks();
+//let estadoNavHandler = mostrarNavLinks();
 
 function openLoginWarningModal(text: string) {
   badCredentials.value = true;
@@ -46,8 +46,9 @@ async function validateInput() {
       setTimeout(() => { closeLoginWarningModal(); }, 5000);
     } else {
       let token = JSON.parse(jwtTokenRes.body);
-      jwtTokenStore.setJwtToken(token["bearer-token"]);
-      estadoNavHandler.setEstadoNav(1);
+      //console.log(token);
+      jwtTokenStore.setJwtToken(token["Bearer-token"]);
+      //estadoNavHandler.setEstadoNav(1);
       router.push({ name: "dashboard" });
     }
   }
