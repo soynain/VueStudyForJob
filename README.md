@@ -1,46 +1,36 @@
 # vuerepaso
 
-This template should help get you started developing with Vue 3 in Vite.
+## Conceptos a repasar: props, manejo de hooks (refs), almacenamiento de estados, router de front end, guardado de jwt's, CORS handling con vite.
 
-## Recommended IDE Setup
+Aqui está el cliente que hice para mi practica de rest api con php vanilla, cliente sencillo, puede ser mejorado
+con respecto a validación de campos u otras optimizaciones, pero ps es para no ir erizo también.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Login sencillito, traté de usar unos componentes de boostrap para vue, no sirven, me quedo con la notacion normal de boostrap
 
-## Type Support for `.vue` Imports in TS
+![image](https://user-images.githubusercontent.com/78714792/210921874-051398c9-1baa-4451-a25e-729519ccb150.png)
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+Dashboard sencillito, diseño reciclado del ejercicio php con mvc, solo que la tabla puede hacer scroll mientras mas registros tenga, también le
+deje un espacio para una paginación que ya no implementé, no es que eso me cueste, es que no tengo tiempo.
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+![image](https://user-images.githubusercontent.com/78714792/210922115-40a42c61-6cf9-4a4e-a024-0e5c9706a719.png)
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+Formulario para registrar nuevo producto, hago uso de estados para evitar enviar campos vacios:
 
-## Customize configuration
+![image](https://user-images.githubusercontent.com/78714792/210922316-8589a3c6-262c-4c58-a937-f7f07ac7a52c.png)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+Está chida la advertencia porque desaparece después de 5 segundos, usando eventos con estados y renderizados condicionales.
 
-## Project Setup
+Al guardar productos, sale una advertencia de que se hizo con éxito, e igual los alerts desaparecen
 
-```sh
-npm install
-```
+![image](https://user-images.githubusercontent.com/78714792/210922617-48f5cfe7-ec86-46c6-8df5-04a074652ccf.png)
 
-### Compile and Hot-Reload for Development
 
-```sh
-npm run dev
-```
+El borrado de elementos jala muy bien también vue es rapido como siempre, me faltó un modal, pude haberlo hecho fácil con unos props y un componente encimado del dashboard con un div de zindex en 99999, un position fixed y un with y height de 100% con fondo transparente y un componente hijo que seria una tarjeta para preguntar si está seguro de borrar o no, pero que gueba también, solo me interesa recordar conceptos de vue.
 
-### Type-Check, Compile and Minify for Production
+![image](https://user-images.githubusercontent.com/78714792/210922777-c6e19dea-efc9-4e5d-86cb-1e4a353437c9.png)
 
-```sh
-npm run build
-```
+El formulario para modificar un producto es el mismo, me faltó pasar los textos a los inputs con otro props al forms, pero me interesaba saber más el como reusar un componente para no clonar dos veces los inputs. Para hacer lo que me faltó, en teoria al routear al otro componente, debí pasar los props pero al iniciar el componente o: hacia una consulta con el id individual o, guardaba los datos en un estado y los cargaba en automatico al componente al empezar.
 
-### Lint with [ESLint](https://eslint.org/)
+![image](https://user-images.githubusercontent.com/78714792/210922920-34a92a31-0903-4e42-83eb-550acc358037.png)
 
-```sh
-npm run lint
-```
+Todo se actualiza chido también, y las rutas están protegidas, si quiero ir al login estando con un token, no me dejará y viceversa.
