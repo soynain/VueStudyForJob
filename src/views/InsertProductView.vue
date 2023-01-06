@@ -56,6 +56,9 @@ async function updateData() {
         }
     } else {
         booleanValidacionCamposRender.value = true;
+        setTimeout(()=>{
+            booleanValidacionCamposRender.value = false;
+        },5000)
     }
 }
 </script>
